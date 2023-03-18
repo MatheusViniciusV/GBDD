@@ -1,1 +1,1 @@
-# GED
+# DDM - Docent Data Manager

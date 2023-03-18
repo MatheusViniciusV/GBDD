@@ -1,6 +1,6 @@
 from tkinter import *
 
-class GUI_GED:
+class GUIMain:
 
     __root = Tk()
 
@@ -15,5 +15,5 @@ class GUI_GED:
     def run(self): 
         self.__root.mainloop()
 
-main = GUI_GED()
+main = GUIMain()
 main.run()
