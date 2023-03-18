@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import sqlite3
 
+
 class GUITable:
 
     __root = None
@@ -11,23 +12,23 @@ class GUITable:
     __treeview = None
     __columns = []
 
-    def __init__(self, dataBaseName, tableName):
+    def __init__(self, databasename, tablename):
         self.__root = Tk()
-        self.__root.title(dataBaseName + ' - ' + tableName)
+        self.__root.title(databasename + ' - ' + tablename)
         self.__root.geometry('600x400')
         self.__root.resizable(True, True)
 
-        self.__frame = LabelFrame(self.__root, text=dataBaseName + ' - ' + tableName)
+        self.__frame = LabelFrame(self.__root, text=databasename + ' - ' + tablename)
         self.__frame.pack(fill='both', expand='yes', padx=10, pady=10)
 
-        self.__connection = sqlite3.connect(dataBaseName + '.db')
+        self.__connection = sqlite3.connect(databasename + '.db')
         self.__cursor = self.__connection.cursor()
 
-        self.__initTreeview(tableName)
+        self.__inittreeview(tablename)
 
-    def __initTreeview(self, tableName):
+    def __inittreeview(self, tablename):
 
-        aux = self.__cursor.execute('SELECT * FROM ' + tableName)
+        aux = self.__cursor.execute('SELECT * FROM ' + tablename)
         for i in aux.description:
             self.__columns.append(i[0])
 
@@ -39,7 +40,7 @@ class GUITable:
 
         self.__treeview.pack()
 
-        self.__cursor.execute('SELECT * FROM ' + tableName)
+        self.__cursor.execute('SELECT * FROM ' + tablename)
         rows = self.__cursor.fetchall()
         for i in rows:
             self.__treeview.insert('', 'end', values=i)
