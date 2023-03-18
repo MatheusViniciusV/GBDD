@@ -19,7 +19,7 @@ class GUITable:
         self.__root.resizable(True, True)
 
         self.__frame = LabelFrame(self.__root, text=databasename + ' - ' + tablename)
-        self.__frame.pack(fill='both', expand='yes', padx=10, pady=10)
+        self.__frame.pack(fill='both', padx=10, pady=10)
 
         self.__connection = sqlite3.connect(databasename + '.db')
         self.__cursor = self.__connection.cursor()
