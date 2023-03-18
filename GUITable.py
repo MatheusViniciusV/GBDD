@@ -4,18 +4,20 @@ import sqlite3
 
 class GUITable:
 
-    __root = Tk()
-    __frame = LabelFrame(__root, text='teste2')
+    __root = None
+    __frame = None
     __connection = None
     __cursor = None
     __treeview = None
     __columns = []
 
     def __init__(self, dataBaseName, tableName):
+        self.__root = Tk()
         self.__root.title(dataBaseName + ' - ' + tableName)
         self.__root.geometry('600x400')
         self.__root.resizable(True, True)
 
+        self.__frame = LabelFrame(self.__root, text=dataBaseName + ' - ' + tableName)
         self.__frame.pack(fill='both', expand='yes', padx=10, pady=10)
 
         self.__connection = sqlite3.connect(dataBaseName + '.db')
@@ -47,6 +49,3 @@ class GUITable:
 
     def run(self): 
         self.__root.mainloop()
-
-gui = GUITable('teste2', 'fish')
-gui.run()
