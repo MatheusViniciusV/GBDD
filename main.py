@@ -66,7 +66,7 @@ class Inicio:
                                                                                                            row=0,
                                                                                                            padx=10,
                                                                                                            pady=10)
-        self.buttonnew = ttk.Button(self.frame, text='Novo banco de dados', command=self.debug).grid(column=2, row=0, padx=10,
+        self.buttonnew = ttk.Button(self.frame, text='Novo banco de dados', command=None).grid(column=2, row=0, padx=10,
                                                                                                pady=10)
         self.buttondelete = ttk.Button(self.frame, text='Deletar banco de dados', command=None).grid(column=3, row=0,
                                                                                                      padx=10, pady=10)
@@ -94,8 +94,7 @@ class Inicio:
         self.gui = gui
 
     def configlistbox(self):
-        for i in self.listtables:
-            self.listbox.insert('end', i)
+        self.var.set(self.listtables)
 
     def opendb(self):
         self.file = dlg.askopenfilename()
@@ -104,15 +103,14 @@ class Inicio:
         global cursor
         connection = sqlite3.connect(self.file)
         cursor = connection.cursor()
-        print("openado")
+        cursor.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
+        self.listtables = cursor.fetchall()
+        self.configlistbox()
 
     def closedb(self):
         self.stringvarlabeldb.set('Ainda não há nenhum banco de dados aberto.')
-
-    def debug(self):
-        cursor.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
-        self.listtables = cursor.fetchall()
-        print(self.listtables)
+        self.listtables = ()
+        self.configlistbox()
 
 
 
