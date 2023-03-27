@@ -44,10 +44,10 @@ class Inicio:
     buttonclose = None
     buttonnew = None
     buttondelete = None
+    buttontablevisualize = None
     buttontablecreate = None
     buttontabledelete = None
     buttontableopen = None
-    stringvarlabeldb = None
     labelframe = None
     labeldb = None
     lablestable = []
@@ -59,38 +59,38 @@ class Inicio:
 
     def __init__(self, gui, tabcontrol):
         self.frame = ttk.Frame(tabcontrol)
-        self.buttonopen = ttk.Button(self.frame, text='Abrir banco de dados', command=self.opendb).grid(column=0, row=0,
-                                                                                                        padx=10,
-                                                                                                        pady=10)
-        self.buttonclose = ttk.Button(self.frame, text='Fechar banco de dados', command=self.closedb).grid(column=1,
-                                                                                                           row=0,
-                                                                                                           padx=10,
-                                                                                                           pady=10)
-        self.buttonnew = ttk.Button(self.frame, text='Novo banco de dados', command=None).grid(column=2, row=0, padx=10,
-                                                                                               pady=10)
-        self.buttondelete = ttk.Button(self.frame, text='Deletar banco de dados', command=None).grid(column=3, row=0,
-                                                                                                     padx=10, pady=10)
-        self.buttontablecreate = ttk.Button(self.frame, text='Criar tabela', command=None).grid(sticky=tk.S, column=1,
-                                                                                                row=2, padx=10, pady=10)
-        self.buttontabledelete = ttk.Button(self.frame, text='Deletar tabela', command=None).grid(column=1, row=3,
-                                                                                                  padx=10, pady=10)
-        self.buttontableopen = ttk.Button(self.frame, text='Abrir tabela', command=None).grid(sticky=tk.N, column=1,
-                                                                                              row=4, padx=10, pady=10)
-        self.stringvarlabeldb = tk.StringVar()
-        self.stringvarlabeldb.set('Ainda não há nenhum banco de dados aberto.')
-        self.labeldb = ttk.Label(self.frame, textvariable=self.stringvarlabeldb).grid(sticky=tk.W, column=0, row=1,
-                                                                                      padx=10, pady=10, columnspan=2)
+        self.buttonopen = ttk.Button(self.frame, text='Abrir banco de dados', command=self.opendb)
+        self.buttonopen.grid(column=0, row=0, padx=10, pady=10)
+        self.buttonclose = ttk.Button(self.frame, text='Fechar banco de dados', command=self.closedb)
+        self.buttonclose.grid(column=1, row=0, padx=10, pady=10)
+        self.buttonnew = ttk.Button(self.frame, text='Novo banco de dados', command=self.debug)
+        self.buttonnew.grid(column=2, row=0, padx=10, pady=10)
+        self.buttondelete = ttk.Button(self.frame, text='Deletar banco de dados', command=None)
+        self.buttondelete.grid(column=3, row=0, padx=10, pady=10)
+        self.buttontableselect = ttk.Button(self.frame, text='Selecionar tabela', command=self.selecttable)
+        self.buttontableselect.grid(column=1, row=2, padx=10, pady=3)
+        self.buttontablecreate = ttk.Button(self.frame, text='Criar tabela', command=None)
+        self.buttontablecreate.grid(column=1, row=3, padx=10, pady=3)
+        self.buttontabledelete = ttk.Button(self.frame, text='Deletar tabela', command=None)
+        self.buttontabledelete.grid(column=1, row=4, padx=10, pady=3)
+        self.buttontableopen = ttk.Button(self.frame, text='Abrir tabela', command=None)
+        self.buttontableopen.grid(column=1, row=5, padx=10, pady=3)
+        self.labeldb = ttk.Label(self.frame, text='Ainda não há nenhum banco de dados aberto.')
+        self.labeldb.grid(sticky=tk.W, column=0, row=1, padx=10, pady=10, columnspan=2)
         self.var = tk.StringVar()
         self.var.set(self.listtables)
-        self.listbox = tk.Listbox(self.frame, listvariable=self.var).grid(sticky=tk.W, column=0, row=2, padx=10,
-                                                                          pady=15, rowspan=3)
-        self.labelframe = tk.LabelFrame(self.frame, text='Informações da tabela selecionada', width=280,
-                                        height=220).grid(column=2, row=1, padx=10, pady=10, columnspan=2, rowspan=4)
-        self.lablestable.append(ttk.Label(self.labelframe, text='Nome: ').place(x=312, y=100))
-        self.lablestable.append(ttk.Label(self.labelframe, text='Número de colunas: ').place(x=312, y=120))
-        self.lablestable.append(ttk.Label(self.labelframe, text='Número de linhas: ').place(x=312, y=140))
-        self.lablestable.append(
-            ttk.Label(self.labelframe, text='Nome das colunas: ', wraplength=265).place(x=312, y=160))
+        self.listbox = tk.Listbox(self.frame, listvariable=self.var)
+        self.listbox.grid(sticky=tk.W, column=0, row=2, padx=10, pady=15, rowspan=4)
+        self.labelframe = tk.LabelFrame(self.frame, text='Informações da tabela selecionada', width=1000, height=220)
+        self.labelframe.grid(column=2, row=1, padx=10, pady=10, columnspan=2, rowspan=5)
+        self.lablestable.append(ttk.Label(self.labelframe, text='Nome: '))
+        self.lablestable[0].grid(column=0, row=0, padx=10, pady=5, sticky=tk.W)
+        self.lablestable.append(ttk.Label(self.labelframe, text='Número de colunas: '))
+        self.lablestable[1].grid(column=0, row=1, padx=10, pady=5, sticky=tk.W)
+        self.lablestable.append(ttk.Label(self.labelframe, text='Número de linhas: '))
+        self.lablestable[2].grid(column=0, row=2, padx=10, pady=5, sticky=tk.W)
+        self.lablestable.append(ttk.Label(self.labelframe, text='Nome das colunas: ', wraplength=255))
+        self.lablestable[3].grid(column=0, row=3, padx=10, pady=5, sticky=tk.W)
         self.gui = gui
 
     def configlistbox(self):
@@ -98,7 +98,7 @@ class Inicio:
 
     def opendb(self):
         self.file = dlg.askopenfilename()
-        self.stringvarlabeldb.set('Banco de dados: ' + os.path.split(self.file)[1])
+        self.labeldb.config(text='Banco de dados: ' + os.path.split(self.file)[1])
         global connection
         global cursor
         connection = sqlite3.connect(self.file)
@@ -108,9 +108,19 @@ class Inicio:
         self.configlistbox()
 
     def closedb(self):
-        self.stringvarlabeldb.set('Ainda não há nenhum banco de dados aberto.')
+        self.labeldb.config(text='O banco de dados foi fechado.')
+        self.lablestable[0].config(text='Nome: ')
         self.listtables = ()
         self.configlistbox()
+
+    def selecttable(self):
+        if(self.listbox.curselection() == ()):
+            print('Aviso: Não há nenhuma tabela selecionada.')
+        else:
+            self.lablestable[0].config(text='Nome: ' + self.listbox.get(self.listbox.curselection()[0])[0])
+
+    def debug(self):
+        print(self.listbox.get(self.listbox.curselection()[0])[0])
 
 
 
