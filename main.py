@@ -125,6 +125,7 @@ class Inicio:
         self.lablestabela[0].config(text='Nome: ')
         self.listatabelas = ()
         self.configurarlistbox()
+        bancodedados.fechar()
 
     def selecionartabela(self):
         if(self.listbox.curselection() == ()):
