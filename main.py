@@ -1,64 +1,10 @@
 from tkinter import *
 from tkinter import filedialog as dlg
+import tkinter.messagebox
 from TableManager import *
-import sqlite3
+from DBManager import *
 import os
 
-class BancoDeDados:
-
-    conexao = None
-    conectado = False
-    cursor = None
-
-    def conectar(self, arquivo): 
-        self.conexao = sqlite3.connect(arquivo)
-        self.cursor = self.conexao.cursor()
-        self.conectado = True
-
-    def fechar(self):
-        self.conexao.close()
-        self.conectado = False
-
-    def execute(self, comando):
-        self.cursor.execute(comando)
-        return self.cursor.fetchall()
-    
-    def novatabela(self, tabela, colunas): 
-
-        comando = ''' CREATE TABLE  ''' + tabela + " ("
-
-        for i in range(len(colunas)-1):
-            comando = comando + colunas[i] + " text, "
-        comando = comando + colunas[len(colunas)-1] + " text)"
-
-        return self.execute(comando)
-
-    def apagartabela(self, tabela): 
-        return self.execute('''DROP TABLE ''' + tabela)
-    
-    def dadostabela(self, tabela):
-        return self.cursor.execute('''SELECT * FROM ''' + tabela)
-
-    def listatabelas(self): 
-        return self.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
-    
-    def numerocolunas(self, tabela): 
-        data = self.dadostabela(tabela)
-        return len(data.description)
-    
-    def numerolinhas(self, tabela):
-        data = self.dadostabela(tabela)
-        return len(data)
-
-    def listacolunas(self, tabela): 
-
-        colunas = ''
-        data = self.dadostabela(tabela)
-
-        for coluna in data.description:
-            colunas = colunas + ' ' + coluna[0]
-
-        return colunas
 
 class GuiInicio:
 
@@ -104,8 +50,8 @@ class GuiInicio:
 
         self.botaoabrir = Button(self.janela, text='Abrir banco de dados', command=self.abrirbancodedados)
         self.botaofechar = Button(self.janela, text='Fechar banco de dados', command=self.fecharbancodedados)
-        self.botaonovo = Button(self.janela, text='Novo banco de dados', command=self.debug)
-        self.botaodeletar = Button(self.janela, text='Deletar banco de dados', command=None)
+        self.botaonovo = Button(self.janela, text='Novo banco de dados', command=self.criarbancodedados)
+        self.botaodeletar = Button(self.janela, text='Deletar banco de dados', command=self.deletarbancodedados)
         self.buttontableselect = Button(self.janela, text='Selecionar tabela', command=self.selecionartabela)
         self.botaotabelacriar = Button(self.janela, text='Criar tabela', command=self.criartabela)
         self.botaotabeladeletar = Button(self.janela, text='Deletar tabela', command=self.deletartabela)
@@ -144,7 +90,7 @@ class GuiInicio:
         self.listatabelas.set(bancodedados.listatabelas())
 
     def abrirbancodedados(self): 
-        self.caminhoarquivo = dlg.askopenfilename() #abre janela de procurar arquivo
+        self.caminhoarquivo = dlg.askopenfilename()  # abre janela de procurar arquivo
         self.labelbancodedados.config(text='Banco de dados: ' + os.path.split(self.caminhoarquivo)[1])
         bancodedados.conectar(self.caminhoarquivo)
         self.configurarlistbox()
@@ -156,8 +102,37 @@ class GuiInicio:
         self.lablestabela[1].config(text='Número de colunas: ')
         self.lablestabela[3].config(text='Nome das colunas: ')
 
-        self.listatabelas.set(()) #esvazia o listbox
+        self.listatabelas.set(())  # esvazia o listbox
         bancodedados.fechar()
+
+    def criarbancodedados(self):
+
+        def criarbd():
+            self.caminhoarquivo = entrynome.get()+'.db'
+            bancodedados.conectar(self.caminhoarquivo)
+            nameroot.destroy()
+            self.labelbancodedados.config(text='Banco de dados: ' + self.caminhoarquivo)
+            self.configurarlistbox()
+
+        nameroot = Tk()
+
+        labelnome = Label(nameroot, text="Nome do Banco de dados:")
+        entrynome = Entry(nameroot, width=20)
+        buttoncriar = Button(nameroot, text="criar", width=10, command=criarbd)
+
+        labelnome.grid(column=0, row=0)
+        entrynome.grid(column=0, row=1)
+        buttoncriar.grid(column=0, row=2)
+
+    def deletarbancodedados(self):
+
+        if tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
+                                                                           'Isso não poderá ser desfeito.'):
+            self.labelbancodedados.config(text='O banco de dados foi fechado.')
+            bancodedados.fechar()
+            os.remove(self.caminhoarquivo)
+
+        return
 
     def selecionartabela(self): 
 
@@ -176,7 +151,7 @@ class GuiInicio:
 
     def deletartabela(self): 
 
-        if self.tabelafoiselecionada == True:
+        if self.tabelafoiselecionada:
             bancodedados.deletartabela(self.nometabela)
             self.configurarlistbox()
         else:
@@ -189,8 +164,7 @@ class GuiInicio:
         else:
             print('Aviso: Não há nenhuma tabela selecionada.')
 
-    def criartabela(self): 
-
+    def criartabela(self):
         if bancodedados.conectado:
             TableCreator(bancodedados)
 
@@ -200,8 +174,6 @@ class GuiInicio:
     def rodar(self): 
         self.janela.mainloop()
 
-    def debug(self):
-        print(bancodedados.numerocolunas(self.nometabela))
 
 bancodedados = BancoDeDados()
 main = GuiInicio()

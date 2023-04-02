@@ -2,34 +2,56 @@ import sqlite3
 
 
 class BancoDeDados:
-    connection = None
-    connected = False
+    conexao = None
+    conectado = False
     cursor = None
 
     def conectar(self, arquivo):
-        self.connection = sqlite3.connect(arquivo)
-        self.cursor = self.connection.cursor()
+        self.conexao = sqlite3.connect(arquivo)
+        self.cursor = self.conexao.cursor()
+        self.conectado = True
 
     def fechar(self):
-        self.connection.close()
-        self.connected = False
+        self.conexao.close()
+        self.conectado = False
 
     def execute(self, comando):
         self.cursor.execute(comando)
         return self.cursor.fetchall()
 
-    def listtables(self):
+    def novatabela(self, tabela, colunas):
+
+        comando = ''' CREATE TABLE  ''' + tabela + " ("
+
+        for i in range(len(colunas) - 1):
+            comando = comando + colunas[i] + " text, "
+        comando = comando + colunas[len(colunas) - 1] + " text)"
+
+        return self.execute(comando)
+
+    def apagartabela(self, tabela):
+        return self.execute('''DROP TABLE ''' + tabela)
+
+    def dadostabela(self, tabela):
+        return self.cursor.execute('''SELECT * FROM ''' + tabela)
+
+    def listatabelas(self):
         return self.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
 
-    def droptables(self, table):
-        return self.execute('''DROP TABLE ''' + table)
+    def numerocolunas(self, tabela):
+        data = self.dadostabela(tabela)
+        return len(data.description)
 
-    def newtable(self, table, columns):
+    def numerolinhas(self, tabela):
+        data = self.dadostabela(tabela)
+        return len(data)
 
-        command = ''' CREATE TABLE  ''' + table + " ("
+    def listacolunas(self, tabela):
 
-        for i in range(len(columns)-1):
-            command = command + columns[i] + " text, "
-        command = command + columns[len(columns)-1] + " text)"
+        colunas = ''
+        data = self.dadostabela(tabela)
 
-        return self.execute(command)
+        for coluna in data.description:
+            colunas = colunas + ' ' + coluna[0]
+
+        return colunas
