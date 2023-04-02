@@ -1,5 +1,3 @@
-from tkinter import *
-from tkinter import filedialog as dlg
 import tkinter.messagebox
 from TableManager import *
 from DBManager import *
@@ -29,7 +27,7 @@ class GuiInicio:
     caminhoarquivo = None
     nometabela = None
 
-    tabelafoiselecionada = False
+    tabelaselecionada = False
 
     def __init__(self):
 
@@ -42,7 +40,7 @@ class GuiInicio:
         #listbox
 
         self.listatabelas = StringVar()
-        self.listatabelas.set(())
+        self.listatabelas.set('')
         self.listbox = Listbox(self.janela, listvariable=self.listatabelas)
         self.listbox.grid(sticky=W, column=0, row=2, padx=10, pady=15, rowspan=4)
 
@@ -102,7 +100,7 @@ class GuiInicio:
         self.lablestabela[1].config(text='Número de colunas: ')
         self.lablestabela[3].config(text='Nome das colunas: ')
 
-        self.listatabelas.set(())  # esvazia o listbox
+        self.listatabelas.set('')  # esvazia o listbox
         bancodedados.fechar()
 
     def criarbancodedados(self):
@@ -151,22 +149,22 @@ class GuiInicio:
 
     def deletartabela(self): 
 
-        if self.tabelafoiselecionada:
-            bancodedados.deletartabela(self.nometabela)
+        if self.tabelaselecionada:
+            bancodedados.apagartabela(self.nometabela)
             self.configurarlistbox()
         else:
             print('Aviso: Não há nenhuma tabela selecionada.')
 
     def abrirtabela(self): 
 
-        if self.tabelafoiselecionada:
+        if self.tabelaselecionada:
             TableManager(self.nometabela)
         else:
             print('Aviso: Não há nenhuma tabela selecionada.')
 
     def criartabela(self):
         if bancodedados.conectado:
-            TableCreator(bancodedados)
+            TableCreator(bancodedados, self)
 
     def sair(self): 
         self.janela.destroy()

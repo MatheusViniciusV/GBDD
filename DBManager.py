@@ -44,7 +44,7 @@ class BancoDeDados:
 
     def numerolinhas(self, tabela):
         data = self.dadostabela(tabela)
-        return len(data)
+        return len(data)    
 
     def listacolunas(self, tabela):
 

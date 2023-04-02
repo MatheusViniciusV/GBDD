@@ -1,7 +1,4 @@
 import tkinter.messagebox
-from tkinter import *
-from tkinter import ttk
-from tkinter import filedialog as dlg
 from EditableListBox import *
 
 
@@ -9,7 +6,7 @@ class TableManager:
 
     root = None
 
-    def __init__(self):
+    def __init__(self, tabela):
         self.root = Tk()
         self.root.title('Table Manager')
         self.root.geometry('680x400')
@@ -37,9 +34,12 @@ class TableCreator:
     nomeentry = None
     columnsentry = None
     bdm = None
+    closed = False
+    janela = None
 
-    def __init__(self, bdm):
+    def __init__(self, bdm, janela):
         #init settings
+        self.janela = janela
         self.bdm = bdm
         self.frame = Frame()
         self.root = Tk()
@@ -113,3 +113,7 @@ class TableCreator:
             listacolunas.insert(i, self.lb.get(i))
 
         self.bdm.novatabela(self.nomeentry.get(), listacolunas)
+        self.janela.configurarlistbox()
+        self.root.destroy()
+
+
