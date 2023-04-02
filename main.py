@@ -1,6 +1,8 @@
 import tkinter.messagebox
 from TableManager import *
+from TableCreator import *
 from DBManager import *
+from tkinter import filedialog as dlg
 import os
 
 
@@ -152,6 +154,9 @@ class GuiInicio:
         if self.tabelaselecionada:
             bancodedados.apagartabela(self.nometabela)
             self.configurarlistbox()
+            self.lablestabela[0].config(text='Nome: ')
+            self.lablestabela[1].config(text='Número de colunas: ')
+            self.lablestabela[3].config(text='Nome das colunas: ')
         else:
             print('Aviso: Não há nenhuma tabela selecionada.')
 

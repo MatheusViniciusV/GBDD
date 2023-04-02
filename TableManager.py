@@ -1,119 +1,66 @@
-import tkinter.messagebox
-from EditableListBox import *
-
+from tkinter import *
+import tkinter.ttk as ttk
 
 class TableManager:
 
     root = None
 
-    def __init__(self, tabela):
+    procura = None
+    barraprocura = None
+    botaoprocura = None
+
+    body = None
+    scrollbary = None
+    scrollbarx = None
+    tree = None
+    
+    bottom = None
+    botaoadicionarlinha = None
+    botaoremoverlinha = None
+    botaoeditarlinha = None
+
+    def __init__(self):
+
         self.root = Tk()
         self.root.title('Table Manager')
-        self.root.geometry('680x400')
+        self.root.geometry('630x450')
         self.root.resizable(False, False)
 
+        self.barraprocura = Entry(self.root, width=75)
+        self.barraprocura.grid(column=0, row=0, padx=10, pady=10, columnspan=2)
+        self.botaoprocura = Button(self.root, text='Procurar na tabela', command=None, width=15)
+        self.botaoprocura.grid(column=2, row=0, padx=10, pady=10)
 
-def validate(action, index, value_if_allowed,
-             prior_value, text, validation_type, trigger_type, widget_name):
-    if value_if_allowed:
-        try:
-            int(value_if_allowed)
-            return True
-        except ValueError:
-            return False
-    else:
-        return False
+        self.body = Frame(self.root, height=400)
+        self.body.grid(column=0, row=1, columnspan=3, padx=10)
+        self.scrollbary = Scrollbar(self.body, orient=VERTICAL)
+        self.scrollbarx = Scrollbar(self.body, orient=HORIZONTAL)
+        self.tree = ttk.Treeview(self.body, columns=("Firstname", "Lastname", "Address"), selectmode="extended", yscrollcommand=self.scrollbary.set, xscrollcommand=self.scrollbarx.set, height=15)
+        self.scrollbary.config(command=self.tree.yview)
+        self.scrollbary.pack(side=RIGHT, fill=Y)
+        self.scrollbarx.config(command=self.tree.xview)
+        self.scrollbarx.pack(side=BOTTOM, fill=X)
+        self.tree.heading('Firstname', text="Firstname", anchor=W)
+        self.tree.heading('Lastname', text="Lastname", anchor=W)
+        self.tree.heading('Address', text="Address", anchor=W)
+        self.tree.column('#0', stretch=NO, minwidth=0, width=0)
+        self.tree.column('#1', stretch=NO, minwidth=0, width=400)
+        self.tree.column('#2', stretch=NO, minwidth=0, width=75)
+        self.tree.column('#3', stretch=NO, minwidth=0, width=100)
+        self.tree.pack()
 
-
-class TableCreator:
-
-    root = None
-    frame = None
-    lb = None
-    listboxlabels = None
-    nomeentry = None
-    columnsentry = None
-    bdm = None
-    closed = False
-    janela = None
-
-    def __init__(self, bdm, janela):
-        #init settings
-        self.janela = janela
-        self.bdm = bdm
-        self.frame = Frame()
-        self.root = Tk()
-        self.root.title('Table Creator')
-        self.root.geometry('360x170')
-        self.root.resizable(False, False)
-
-        #validation command
-        vcmd = (self.root.register(validate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-
-        #button
-        createbutton = Button(self.root, text="Criar Tabela", command=self.criartabela)
-
-        #entrys
-        self.columnsentry = Entry(self.root, width=4, validate='key', validatecommand=vcmd)
-        self.nomeentry = Entry(self.root, width=20)
-
-        #labels
-        columnslabel = Label(self.root, text="Numero de\nColunas:", width=10, height=2)
-        listboxlabel = Label(self.root, text="Colunas:", width=10, height=2)
-        nomelabel = Label(self.root, text="Nome:", width=10, height=2)
-
-        #listboxes
-        self.lb = EditableListbox(self.root, height=3, font=30)
-
-        #grids
-        createbutton.grid(column=3, row=3, padx=10, pady=10, sticky="s")
-
-        columnslabel.grid(column=1, row=0, padx=10, pady=1)
-        listboxlabel.grid(column=1, row=2, padx=10, pady=1)
-        nomelabel.grid(column=3, row=0, padx=10, pady=1)
-
-        self.columnsentry.grid(column=1, row=1, padx=10, pady=1)
-        self.nomeentry.grid(column=3, row=1, padx=20, pady=1)
-
-        self.lb.grid(column=0, row=3, columnspan=3, padx=10)
-
-        #lb template
-        for i in range(3):
-            self.lb.insert("end", f"Item #{i + 1}")
-
-        def updatelistbox():
-            #lb update
-            self.lb.destroy()
-            self.lb = EditableListbox(self.root, height=min(int(self.columnsentry.get()), 10), font=30)
-            self.lb.grid(column=0, row=3, columnspan=3, padx=10)
-
-            #window update
-            self.root.geometry("360x" + str(110+min(int(self.columnsentry.get()), 10)*20))
-
-            #lb template update
-            for i in range(min(int(self.columnsentry.get()), 10)):
-                self.lb.insert("end", f"Item #{i + 1}")
-
-            #warning check
-            if int(self.columnsentry.get()) > 10:
-                tkinter.messagebox.showwarning(title="Máximo excedido", message="Você ultrapassou o limite de 10 "
-                                                                                "colunas")
-
-        def entrylostfocus(event):
-            self.root.focus_force()
-            updatelistbox()
-            print(int(self.columnsentry.get()))
-
-        self.columnsentry.bind("<Return>", entrylostfocus)
-
-    def criartabela(self):
-        listacolunas = []
-
-        for i in range(int(self.columnsentry.get())):
-            listacolunas.insert(i, self.lb.get(i))
-
-        self.bdm.novatabela(self.nomeentry.get(), listacolunas)
-        self.janela.configurarlistbox()
-        self.root.destroy()
+        self.bottom = Frame(self.root, height=30)
+        self.bottom.grid(column=0, row=2, columnspan=3)
+        self.botaoadicionarlinha = Button(self.bottom, text='Adicionar linha', command=None)
+        self.botaoadicionarlinha.grid(column=0, row=0, padx=10, pady=10)
+        self.botaoaremoverlinha = Button(self.bottom, text='Remover linha', command=None)
+        self.botaoaremoverlinha.grid(column=1, row=0, padx=10, pady=10)
+        self.botaoeditarlinha = Button(self.bottom, text='Editar linha', command=None)
+        self.botaoeditarlinha.grid(column=2, row=0, padx=10, pady=10)
 
 
+    def run(self):
+        self.root.mainloop()
+
+bingos = TableManager()
+bingos.run()
