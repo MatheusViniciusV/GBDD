@@ -11,18 +11,15 @@ class BancoDeDados:
     cursor = None
 
     def conectar(self, arquivo): 
-
         self.conexao = sqlite3.connect(arquivo)
         self.cursor = self.conexao.cursor()
         self.conectado = True
 
     def fechar(self):
-
         self.conexao.close()
         self.conectado = False
 
     def execute(self, comando):
-
         self.cursor.execute(comando)
         return self.cursor.fetchall()
     
@@ -38,20 +35,25 @@ class BancoDeDados:
 
     def apagartabela(self, tabela): 
         return self.execute('''DROP TABLE ''' + tabela)
+    
+    def dadostabela(self, tabela):
+        return self.cursor.execute('''SELECT * FROM ''' + tabela)
 
     def listatabelas(self): 
         return self.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
     
     def numerocolunas(self, tabela): 
-
-        data = self.cursor.execute('''SELECT * FROM ''' + tabela)
+        data = self.dadostabela(tabela)
         return len(data.description)
+    
+    def numerolinhas(self, tabela):
+        data = self.dadostabela(tabela)
+        return len(data)
 
     def listacolunas(self, tabela): 
 
         colunas = ''
-
-        data = self.cursor.execute('''SELECT * FROM ''' + tabela)
+        data = self.dadostabela(tabela)
 
         for coluna in data.description:
             colunas = colunas + ' ' + coluna[0]
@@ -142,7 +144,6 @@ class GuiInicio:
         self.listatabelas.set(bancodedados.listatabelas())
 
     def abrirbancodedados(self): 
-
         self.caminhoarquivo = dlg.askopenfilename() #abre janela de procurar arquivo
         self.labelbancodedados.config(text='Banco de dados: ' + os.path.split(self.caminhoarquivo)[1])
         bancodedados.conectar(self.caminhoarquivo)
@@ -161,7 +162,6 @@ class GuiInicio:
     def selecionartabela(self): 
 
         if self.listbox.curselection() != ():
-
             self.nometabela = self.listbox.get(self.listbox.curselection()[0])[0]
             listacolunas = bancodedados.listacolunas(self.nometabela)
             numerocolunas = bancodedados.numerocolunas(self.nometabela)
