@@ -2,6 +2,7 @@ import sqlite3
 
 
 class BancoDeDados:
+
     conexao = None
     conectado = False
     cursor = None
@@ -18,6 +19,9 @@ class BancoDeDados:
     def execute(self, comando):
         self.cursor.execute(comando)
         return self.cursor.fetchall()
+    
+    def commit(self):
+        self.conexao.commit()
 
     def novatabela(self, tabela, colunas):
 
@@ -34,6 +38,24 @@ class BancoDeDados:
 
     def dadostabela(self, tabela):
         return self.cursor.execute('''SELECT * FROM ''' + tabela)
+    
+    def inserirnatabela(self, tabela, valores):
+
+        linha = ''
+        cont = 0
+
+        for item in valores:
+            linha += '\'' + item + '\''
+            cont += 1
+            if(cont != len(valores)):
+                linha += ', '
+
+        comando =  '''INSERT INTO '''+tabela+' '+ "(" + ", ".join(self.listacolunas(tabela)) + ")"+''' VALUES '''+'('+linha+')'
+
+        self.execute(comando)
+        self.commit()
+
+    #def removernatabela(self, tabela, id):
 
     def listatabelas(self):
         return self.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
@@ -48,10 +70,10 @@ class BancoDeDados:
 
     def listacolunas(self, tabela):
 
-        colunas = ''
+        colunas = []
         data = self.dadostabela(tabela)
 
         for coluna in data.description:
-            colunas = colunas + ' ' + coluna[0]
+            colunas.append(coluna[0])
 
         return colunas

@@ -138,7 +138,7 @@ class GuiInicio:
 
         if self.listbox.curselection() != ():
             self.nometabela = self.listbox.get(self.listbox.curselection()[0])[0]
-            listacolunas = bancodedados.listacolunas(self.nometabela)
+            listacolunas = "(" + ", ".join(bancodedados.listacolunas(self.nometabela)) + ")"
             numerocolunas = bancodedados.numerocolunas(self.nometabela)
             
             self.lablestabela[0].config(text='Nome: ' + self.nometabela)
@@ -163,7 +163,7 @@ class GuiInicio:
     def abrirtabela(self): 
 
         if self.tabelaselecionada:
-            TableManager(self.nometabela)
+            TableManager(bancodedados, self.nometabela)
         else:
             print('Aviso: Não há nenhuma tabela selecionada.')
 
