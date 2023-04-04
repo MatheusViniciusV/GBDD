@@ -126,11 +126,12 @@ class GuiInicio:
 
     def deletarbancodedados(self):
 
-        if tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
-                                                                           'Isso não poderá ser desfeito.'):
-            self.labelbancodedados.config(text='O banco de dados foi fechado.')
+        if bancodedados.conectado and tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
+                                                                           ' Isso não poderá ser desfeito.'):
             bancodedados.fechar()
             os.remove(self.caminhoarquivo)
+            self.fecharbancodedados()
+            self.labelbancodedados.config(text='O banco de dados foi deletado.')
 
         return
 
@@ -152,11 +153,13 @@ class GuiInicio:
     def deletartabela(self): 
 
         if self.tabelaselecionada:
-            bancodedados.apagartabela(self.nometabela)
-            self.configurarlistbox()
-            self.lablestabela[0].config(text='Nome: ')
-            self.lablestabela[1].config(text='Número de colunas: ')
-            self.lablestabela[3].config(text='Nome das colunas: ')
+            if tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
+                                                                           ' Isso não poderá ser desfeito.'):
+                bancodedados.apagartabela(self.nometabela)
+                self.configurarlistbox()
+                self.lablestabela[0].config(text='Nome: ')
+                self.lablestabela[1].config(text='Número de colunas: ')
+                self.lablestabela[3].config(text='Nome das colunas: ')
         else:
             print('Aviso: Não há nenhuma tabela selecionada.')
 

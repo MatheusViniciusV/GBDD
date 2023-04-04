@@ -101,8 +101,7 @@ class TableManager:
 
     def removernatabela(self):
         selection = self.tree.selection()
-        self.bancodedados.cursor.execute('DELETE FROM '+self.tabela+' WHERE '+self.bancodedados.listacolunas(self.tabela)[0]+' = ?',(self.tree.set(selection, "#1"),))
-        self.bancodedados.commit()
+        self.bancodedados.removernatabela(self.tabela, self.bancodedados.listacolunas(self.tabela)[0], self.tree.set(selection, "#1"))
         self.tree.delete(selection)
 
     def run(self):

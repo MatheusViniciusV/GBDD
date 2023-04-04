@@ -55,7 +55,9 @@ class BancoDeDados:
         self.execute(comando)
         self.commit()
 
-    #def removernatabela(self, tabela, id):
+    def removernatabela(self, tabela, coluna, valor):
+        self.cursor.execute('DELETE FROM '+tabela+' WHERE '+coluna+' = ?', (valor,))
+        self.commit()
 
     def listatabelas(self):
         return self.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
