@@ -148,7 +148,7 @@ class GuiInicio:
 
             self.tabelaselecionada = True
         else:
-            print('Aviso: Não há nenhuma tabela selecionada.')
+            tkinter.messagebox.showwarning(message="Selecione uma Tabela")
 
     def deletartabela(self): 
 
@@ -161,14 +161,14 @@ class GuiInicio:
                 self.lablestabela[1].config(text='Número de colunas: ')
                 self.lablestabela[3].config(text='Nome das colunas: ')
         else:
-            print('Aviso: Não há nenhuma tabela selecionada.')
+            tkinter.messagebox.showwarning(message="Selecione uma Tabela")
 
     def abrirtabela(self): 
 
         if self.tabelaselecionada:
             TableManager(bancodedados, self.nometabela)
         else:
-            print('Aviso: Não há nenhuma tabela selecionada.')
+            tkinter.messagebox.showwarning(message="Selecione uma Tabela")
 
     def criartabela(self):
         if bancodedados.conectado:

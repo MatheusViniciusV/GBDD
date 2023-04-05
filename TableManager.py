@@ -35,7 +35,7 @@ class TableManager:
 
         self.barraprocura = Entry(self.root, width=75)
         self.barraprocura.grid(column=0, row=0, padx=10, pady=10, columnspan=2)
-        self.botaoprocura = Button(self.root, text='Procurar na tabela', command=None, width=15)
+        self.botaoprocura = Button(self.root, text='Procurar na tabela', command=self.pesquisartabela, width=15)
         self.botaoprocura.grid(column=2, row=0, padx=10, pady=10)
 
         self.body = Frame(self.root, height=400)
@@ -58,6 +58,22 @@ class TableManager:
         self.botaoaremoverlinha.grid(column=1, row=0, padx=10, pady=10)
         self.botaoeditarlinha = Button(self.bottom, text='Editar linha', command=None)
         self.botaoeditarlinha.grid(column=2, row=0, padx=10, pady=10)
+
+    def pesquisartabela(self):
+
+        self.tree.delete(*self.tree.get_children())
+
+        listacolunas = self.bancodedados.listacolunas(self.tabela)
+
+        resultado = None
+
+        for coluna in listacolunas:
+            resultado = self.bancodedados.cursor.execute(
+                "SELECT * FROM " + self.tabela + " WHERE " + coluna + " LIKE '%" + self.barraprocura.get() + "%'")
+            for linha in resultado:
+                self.tree.insert("", END, values=linha)
+
+
 
     def mostrartabela(self):
 
