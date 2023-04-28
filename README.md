@@ -22,7 +22,7 @@ Entre no diretório do projeto
 Execute o arquivo _main_
 
 ```bash
-  python src/main.py
+  python main.py
 ```
 
 
