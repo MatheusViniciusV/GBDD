@@ -17,13 +17,12 @@ Entre no diretório do projeto
 
 ```bash
   cd GBDD
-  cd src
 ```
 
 Execute o arquivo _main_
 
 ```bash
-  python main.py
+  python src/main.py
 ```
 
 
