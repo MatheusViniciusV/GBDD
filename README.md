@@ -30,7 +30,7 @@ Execute o arquivo _main_
 
 #### Arquivo: main
 ```http
-  /src/BancoDeDados.py
+  /main.py
 ```
     Quando executado, inicia o fluxo de execução do programa.
 
