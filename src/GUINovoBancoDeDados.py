@@ -1,4 +1,5 @@
 from tkinter import *
+from GUIInicio import *
 
 class GUINovoBancoDeDados:
 
@@ -7,7 +8,6 @@ class GUINovoBancoDeDados:
     buttoncriar = None
     bancodedados = None
     janelaprincipal = None
-    caminhoarquivo = None
 
     def __init__(self, bancodedados, janelaprincipal):
 
@@ -24,12 +24,11 @@ class GUINovoBancoDeDados:
         self.buttoncriar.grid(column=0, row=2, pady=5)
 
     def criarbd(self):
-        self.caminhoarquivo = self.entrynome.get()+'.db'
-        self.bancodedados.conectar(self.caminhoarquivo)
-        self.janelaprincipal.labelbancodedados.config(text='Banco de dados: ' + self.caminhoarquivo)
+        self.janelaprincipal.caminhoarquivo = self.entrynome.get()+'.db'
+        self.bancodedados.conectar(self.janelaprincipal.caminhoarquivo)
+        self.janelaprincipal.labelbancodedados.config(text='Banco de dados: ' + self.janelaprincipal.caminhoarquivo)
         self.janelaprincipal.configurarlistbox()
         self.fechar()
 
     def fechar(self):
         self.janela.destroy()
-
