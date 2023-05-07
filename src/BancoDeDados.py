@@ -80,7 +80,14 @@ class BancoDeDados:
         return colunas
     
     def listalinhas(self, tabela):
-        return self.cursor.execute("SELECT * FROM " + tabela)
+
+        data = self.cursor.execute("SELECT * FROM " + tabela)
+        listalinhas = []
+
+        for linha in data:
+            listalinhas.append(linha)
+
+        return listalinhas
     
     def procurarnatabela(self, tabela, coluna, procura):
         return self.cursor.execute("SELECT * FROM " + tabela + " WHERE " + coluna + " LIKE '%" + procura + "%'")
