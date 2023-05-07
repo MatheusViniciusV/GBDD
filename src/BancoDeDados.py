@@ -81,7 +81,7 @@ class BancoDeDados:
     
     def listalinhas(self, tabela):
 
-        data = self.cursor.execute("SELECT * FROM " + tabela)
+        data = self.dadostabela(tabela)
         listalinhas = []
 
         for linha in data:
