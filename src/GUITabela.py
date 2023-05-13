@@ -25,7 +25,7 @@ class GUITabela:
 
         self.root = Tk()
         self.root.title('Table Manager')
-        self.root.geometry('530x450')
+        self.root.geometry('1060x450')
         self.root.resizable(False, False)
 
         self.bancodedados = bancodedados

@@ -91,3 +91,4 @@ class BancoDeDados:
     
     def procurarnatabela(self, tabela, coluna, procura):
         return self.cursor.execute("SELECT * FROM " + tabela + " WHERE " + coluna + " LIKE '%" + procura + "%'")
+
