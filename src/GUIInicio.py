@@ -11,29 +11,29 @@ class GUIInicio:
     janela = Tk()
 
     listbox = None
-    listatabelas = None
+    lista_tabelas = None
 
-    botaoabrir = None
-    botaofechar = None
-    botaonovo = None
-    botaodeletar = None
-    botaotabelavisualizar = None
-    botaotabelacriar = None
-    botaotabeladeletar = None
-    botaotabelaabrir = None
+    botao_abrir = None
+    botao_fechar = None
+    botao_novo = None
+    botao_deletar = None
+    botao_tabela_visualizar = None
+    botao_tabela_criar = None
+    botao_tabela_deletar = None
+    botao_tabela_abrir = None
 
     labelframe = None
-    labelbancodedados = None
-    lablestabela = []
+    label_banco_de_dados = None
+    labels_tabela = []
     
-    caminhoarquivo = None
-    nometabela = None
+    caminho_arquivo = None
+    nome_tabela = None
 
-    tabelaselecionada = False
+    tabela_selecionada = False
 
-    bancodedados = None
+    banco_de_dados = None
 
-    def __init__(self, bancodedados):
+    def __init__(self, banco_de_dados):
 
         #janela
 
@@ -43,125 +43,125 @@ class GUIInicio:
 
         #listbox
 
-        self.listatabelas = StringVar()
-        self.listatabelas.set('')
-        self.listbox = Listbox(self.janela, listvariable=self.listatabelas)
+        self.lista_tabelas = StringVar()
+        self.lista_tabelas.set('')
+        self.listbox = Listbox(self.janela, listvariable=self.lista_tabelas)
         self.listbox.grid(sticky=W, column=0, row=2, padx=10, pady=15, rowspan=4)
 
         #botoes
 
-        self.botaoabrir = Button(self.janela, text='Abrir banco de dados', command=self.abrirbancodedados)
-        self.botaofechar = Button(self.janela, text='Fechar banco de dados', command=self.fecharbancodedados)
-        self.botaonovo = Button(self.janela, text='Novo banco de dados', command=self.criarbancodedados)
-        self.botaodeletar = Button(self.janela, text='Deletar banco de dados', command=self.deletarbancodedados)
-        self.buttontableselect = Button(self.janela, text='Selecionar tabela', command=self.selecionartabela)
-        self.botaotabelacriar = Button(self.janela, text='Criar tabela', command=self.criartabela)
-        self.botaotabeladeletar = Button(self.janela, text='Deletar tabela', command=self.deletartabela)
-        self.botaotabelaabrir = Button(self.janela, text='Abrir tabela', command=self.abrirtabela)
+        self.botao_abrir = Button(self.janela, text='Abrir banco de dados', command=self.abrir_banco_de_dados)
+        self.botao_fechar = Button(self.janela, text='Fechar banco de dados', command=self.fechar_banco_de_dados)
+        self.botao_novo = Button(self.janela, text='Novo banco de dados', command=self.criar_banco_de_dados)
+        self.botao_deletar = Button(self.janela, text='Deletar banco de dados', command=self.deletar_banco_de_dados)
+        self.buttontableselect = Button(self.janela, text='Selecionar tabela', command=self.selecionar_tabela)
+        self.botao_tabela_criar = Button(self.janela, text='Criar tabela', command=self.criar_tabela)
+        self.botao_tabela_deletar = Button(self.janela, text='Deletar tabela', command=self.deletar_tabela)
+        self.botao_tabela_abrir = Button(self.janela, text='Abrir tabela', command=self.abrir_tabela)
 
         #botoes grid
 
-        self.botaoabrir.grid(column=0, row=0, padx=10, pady=10)
-        self.botaofechar.grid(column=1, row=0, padx=10, pady=10)
-        self.botaonovo.grid(column=2, row=0, padx=10, pady=10)
-        self.botaodeletar.grid(column=3, row=0, padx=10, pady=10)
+        self.botao_abrir.grid(column=0, row=0, padx=10, pady=10)
+        self.botao_fechar.grid(column=1, row=0, padx=10, pady=10)
+        self.botao_novo.grid(column=2, row=0, padx=10, pady=10)
+        self.botao_deletar.grid(column=3, row=0, padx=10, pady=10)
         self.buttontableselect.grid(column=1, row=2, padx=10, pady=3)
-        self.botaotabelacriar.grid(column=1, row=3, padx=10, pady=3)
-        self.botaotabeladeletar.grid(column=1, row=4, padx=10, pady=3)
-        self.botaotabelaabrir.grid(column=1, row=5, padx=10, pady=3)
+        self.botao_tabela_criar.grid(column=1, row=3, padx=10, pady=3)
+        self.botao_tabela_deletar.grid(column=1, row=4, padx=10, pady=3)
+        self.botao_tabela_abrir.grid(column=1, row=5, padx=10, pady=3)
 
         #labels
 
-        self.labelbancodedados = Label(self.janela, text='Ainda não há nenhum banco de dados aberto.')
+        self.label_banco_de_dados = Label(self.janela, text='Ainda não há nenhum banco de dados aberto.')
         self.labelframe = LabelFrame(self.janela, text='Informações da tabela selecionada', width=1000, height=220)
-        self.lablestabela.append(Label(self.labelframe, text='Nome: '))
-        self.lablestabela.append(Label(self.labelframe, text='Número de colunas: '))
-        self.lablestabela.append(Label(self.labelframe, text='Número de linhas: '))
-        self.lablestabela.append(Label(self.labelframe, text='Nome das colunas: ', wraplength=255))
+        self.labels_tabela.append(Label(self.labelframe, text='Nome: '))
+        self.labels_tabela.append(Label(self.labelframe, text='Número de colunas: '))
+        self.labels_tabela.append(Label(self.labelframe, text='Número de linhas: '))
+        self.labels_tabela.append(Label(self.labelframe, text='Nome das colunas: ', wraplength=255))
 
         #labels grid
 
-        self.labelbancodedados.grid(sticky=W, column=0, row=1, padx=10, pady=10, columnspan=2)
+        self.label_banco_de_dados.grid(sticky=W, column=0, row=1, padx=10, pady=10, columnspan=2)
         self.labelframe.grid(column=2, row=1, padx=10, pady=10, columnspan=2, rowspan=5)
-        self.lablestabela[0].grid(column=0, row=0, padx=10, pady=5, sticky=W)
-        self.lablestabela[1].grid(column=0, row=1, padx=10, pady=5, sticky=W)
-        self.lablestabela[2].grid(column=0, row=2, padx=10, pady=5, sticky=W)
-        self.lablestabela[3].grid(column=0, row=3, padx=10, pady=5, sticky=W)
+        self.labels_tabela[0].grid(column=0, row=0, padx=10, pady=5, sticky=W)
+        self.labels_tabela[1].grid(column=0, row=1, padx=10, pady=5, sticky=W)
+        self.labels_tabela[2].grid(column=0, row=2, padx=10, pady=5, sticky=W)
+        self.labels_tabela[3].grid(column=0, row=3, padx=10, pady=5, sticky=W)
 
         #banco de dados
-        self.bancodedados = bancodedados
+        self.banco_de_dados = banco_de_dados
 
-    def configurarlistbox(self): 
-        self.listatabelas.set(self.bancodedados.listatabelas())
+    def configurar_listbox(self): 
+        self.lista_tabelas.set(self.banco_de_dados.lista_tabelas())
 
-    def abrirbancodedados(self): 
-        self.caminhoarquivo = dlg.askopenfilename()  # abre janela de procurar arquivo
-        self.labelbancodedados.config(text='Banco de dados: ' + os.path.split(self.caminhoarquivo)[1])
-        self.bancodedados.conectar(self.caminhoarquivo)
-        self.configurarlistbox()
+    def abrir_banco_de_dados(self): 
+        self.caminho_arquivo = dlg.askopenfilename()  # abre janela de procurar arquivo
+        self.label_banco_de_dados.config(text='Banco de dados: ' + os.path.split(self.caminho_arquivo)[1])
+        self.banco_de_dados.conectar(self.caminho_arquivo)
+        self.configurar_listbox()
 
-    def fecharbancodedados(self): 
+    def fechar_banco_de_dados(self): 
 
-        self.labelbancodedados.config(text='O banco de dados foi fechado.')
-        self.lablestabela[0].config(text='Nome: ')
-        self.lablestabela[1].config(text='Número de colunas: ')
-        self.lablestabela[3].config(text='Nome das colunas: ')
+        self.label_banco_de_dados.config(text='O banco de dados foi fechado.')
+        self.labels_tabela[0].config(text='Nome: ')
+        self.labels_tabela[1].config(text='Número de colunas: ')
+        self.labels_tabela[3].config(text='Nome das colunas: ')
 
-        self.listatabelas.set('')  # esvazia o listbox
-        self.bancodedados.fechar()
+        self.lista_tabelas.set('')  # esvazia o listbox
+        self.banco_de_dados.fechar()
 
-    def criarbancodedados(self):
-        GUINovoBancoDeDados(self.bancodedados, self)
+    def criar_banco_de_dados(self):
+        GUINovoBancoDeDados(self.banco_de_dados, self)
 
-    def deletarbancodedados(self):
+    def deletar_banco_de_dados(self):
 
-        if self.bancodedados.conectado and tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
+        if self.banco_de_dados.conectado and tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
                                                                            ' Isso não poderá ser desfeito.'):
-            self.bancodedados.fechar()
-            os.remove(self.caminhoarquivo)
-            self.fecharbancodedados()
-            self.labelbancodedados.config(text='O banco de dados foi deletado.')
+            self.banco_de_dados.fechar()
+            os.remove(self.caminho_arquivo)
+            self.fechar_banco_de_dados()
+            self.label_banco_de_dados.config(text='O banco de dados foi deletado.')
 
         return
 
-    def selecionartabela(self): 
+    def selecionar_tabela(self): 
 
         if self.listbox.curselection() != ():
-            self.nometabela = self.listbox.get(self.listbox.curselection()[0])[0]
-            listacolunas = "(" + ", ".join(self.bancodedados.listacolunas(self.nometabela)) + ")"
-            numerocolunas = self.bancodedados.numerocolunas(self.nometabela)
+            self.nome_tabela = self.listbox.get(self.listbox.curselection()[0])[0]
+            lista_colunas = "(" + ", ".join(self.banco_de_dados.lista_colunas(self.nome_tabela)) + ")"
+            numero_colunas = self.banco_de_dados.numero_colunas(self.nome_tabela)
             
-            self.lablestabela[0].config(text='Nome: ' + self.nometabela)
-            self.lablestabela[1].config(text='Número de colunas: ' + str(numerocolunas))
-            self.lablestabela[3].config(text='Nome das colunas: ' + listacolunas)
+            self.labels_tabela[0].config(text='Nome: ' + self.nome_tabela)
+            self.labels_tabela[1].config(text='Número de colunas: ' + str(numero_colunas))
+            self.labels_tabela[3].config(text='Nome das colunas: ' + lista_colunas)
 
-            self.tabelaselecionada = True
+            self.tabela_selecionada = True
         else:
             tkinter.messagebox.showwarning(message="Selecione uma Tabela")
 
-    def deletartabela(self): 
+    def deletar_tabela(self): 
 
-        if self.tabelaselecionada:
+        if self.tabela_selecionada:
             if tkinter.messagebox.askokcancel(title='Deletar Arquivo', message='Tem certeza que quer deletar esse arquivo?'
                                                                            ' Isso não poderá ser desfeito.'):
-                self.bancodedados.apagartabela(self.nometabela)
-                self.configurarlistbox()
-                self.lablestabela[0].config(text='Nome: ')
-                self.lablestabela[1].config(text='Número de colunas: ')
-                self.lablestabela[3].config(text='Nome das colunas: ')
+                self.banco_de_dados.apagar_tabela(self.nome_tabela)
+                self.configurar_listbox()
+                self.labels_tabela[0].config(text='Nome: ')
+                self.labels_tabela[1].config(text='Número de colunas: ')
+                self.labels_tabela[3].config(text='Nome das colunas: ')
         else:
             tkinter.messagebox.showwarning(message="Selecione uma Tabela")
 
-    def abrirtabela(self): 
+    def abrir_tabela(self): 
 
-        if self.tabelaselecionada:
-            GUITabela(self.bancodedados, self.nometabela)
+        if self.tabela_selecionada:
+            GUITabela(self.banco_de_dados, self.nome_tabela)
         else:
             tkinter.messagebox.showwarning(message="Selecione uma Tabela")
 
-    def criartabela(self):
-        if self.bancodedados.conectado:
-            GUICriarTabela(self.bancodedados, self)
+    def criar_tabela(self):
+        if self.banco_de_dados.conectado:
+            GUICriarTabela(self.banco_de_dados, self)
         else:
             tkinter.messagebox.showwarning(message="Não há nenhum banco de dados selecionado")
 

@@ -22,7 +22,7 @@ class BancoDeDados:
     def commit(self):
         self.conexao.commit()
 
-    def novatabela(self, tabela, colunas):
+    def nova_tabela(self, tabela, colunas):
 
         comando = ''' CREATE TABLE  ''' + tabela + " ("
 
@@ -32,13 +32,13 @@ class BancoDeDados:
 
         return self.execute(comando)
 
-    def apagartabela(self, tabela):
+    def apagar_tabela(self, tabela):
         return self.execute('''DROP TABLE ''' + tabela)
 
-    def dadostabela(self, tabela):
+    def dados_tabela(self, tabela):
         return self.cursor.execute('''SELECT * FROM ''' + tabela)
     
-    def inserirnatabela(self, tabela, valores):
+    def inserir_na_tabela(self, tabela, valores):
 
         linha = ''
         cont = 0
@@ -49,46 +49,46 @@ class BancoDeDados:
             if(cont != len(valores)):
                 linha += ', '
 
-        comando =  '''INSERT INTO '''+tabela+' '+ "(" + ", ".join(self.listacolunas(tabela)) + ")"+''' VALUES '''+'('+linha+')'
+        comando =  '''INSERT INTO '''+tabela+' '+ "(" + ", ".join(self.lista_colunas(tabela)) + ")"+''' VALUES '''+'('+linha+')'
 
         self.execute(comando)
         self.commit()
 
-    def removernatabela(self, tabela, coluna, valor):
+    def remover_na_tabela(self, tabela, coluna, valor):
         self.cursor.execute('DELETE FROM '+tabela+' WHERE '+coluna+' = ?', (valor,))
         self.commit()
 
-    def listatabelas(self):
+    def lista_tabelas(self):
         return self.execute('''SELECT name FROM sqlite_master WHERE type='table';''')
 
-    def numerocolunas(self, tabela):
-        data = self.dadostabela(tabela)
+    def numero_colunas(self, tabela):
+        data = self.dados_tabela(tabela)
         return len(data.description)
 
-    def numerolinhas(self, tabela):
-        data = self.dadostabela(tabela)
+    def numero_linhas(self, tabela):
+        data = self.dados_tabela(tabela)
         return len(data)    
 
-    def listacolunas(self, tabela):
+    def lista_colunas(self, tabela):
 
         colunas = []
-        data = self.dadostabela(tabela)
+        data = self.dados_tabela(tabela)
 
         for coluna in data.description:
             colunas.append(coluna[0])
 
         return colunas
     
-    def listalinhas(self, tabela):
+    def lista_linhas(self, tabela):
 
-        data = self.dadostabela(tabela)
-        listalinhas = []
+        data = self.dados_tabela(tabela)
+        lista_linhas = []
 
         for linha in data:
-            listalinhas.append(linha)
+            lista_linhas.append(linha)
 
-        return listalinhas
+        return lista_linhas
     
-    def procurarnatabela(self, tabela, coluna, procura):
+    def procurar_na_tabela(self, tabela, coluna, procura):
         return self.cursor.execute("SELECT * FROM " + tabela + " WHERE " + coluna + " LIKE '%" + procura + "%'")
 
